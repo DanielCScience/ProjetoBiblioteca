@@ -23,6 +23,13 @@ public class LivroService {
         if (livro.getId() <= 0){
             throw new IllegalArgumentException("Erro: Digite um id maior que 0");
         }
+        if (livro.getNome() == null || livro.getNome().trim().isEmpty()){
+            throw new IllegalArgumentException("Erro: Digite um nome válido!");
+        }
+        Livro existe = livroRepository.buscarPorId(livro.getId());
+        if (existe != null) {
+            throw new IllegalArgumentException("Erro: Já existe um livro cadastrado com este ID!");
+        }
 
         return livroRepository.salvar(livro);
 
@@ -37,7 +44,10 @@ public class LivroService {
     }
 
     public List<Livro> buscarPorNome(String nome) {
-        return null;
+        if(nome == null || nome.trim().isEmpty()){
+            throw new IllegalArgumentException("Erro: O nome deve ser preenchido!");
+        }
+        return livroRepository.buscarPorNome(nome);
     }
 
     public List<Livro> listarTodos() {
